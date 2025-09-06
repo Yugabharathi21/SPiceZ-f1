@@ -9,7 +9,16 @@ import {
   TrendingUp, 
   TrendingDown
 } from 'lucide-react';
+import Header from '../components/Header';
 import { mockApiService } from '../api/mockApi';
+
+interface TeamImage {
+  logo: string;
+  car: string;
+  drivers: {
+    [id: number]: string;
+  };
+}
 
 interface Team {
   id: number;
@@ -33,6 +42,7 @@ interface Team {
     pitStops: number;
     development: number;
   };
+  images?: TeamImage;
 }
 
 interface Driver {
@@ -48,8 +58,8 @@ const Teams: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedTeam, setSelectedTeam] = useState<number | null>(null);
   
-  // Team colors from F1 official branding
-  const teamColors = {
+  // Team colors from F1 official branding - wrapped in useMemo to avoid dependency issues
+  const teamColors = React.useMemo(() => ({
     'Red Bull Racing': {
       primary: '#0600EF',
       secondary: '#121F45'
@@ -89,8 +99,16 @@ const Teams: React.FC = () => {
     'AlphaTauri': {
       primary: '#2B4562',
       secondary: '#1F2E3D'
+    },
+    'RB': {
+      primary: '#0090FF',
+      secondary: '#0D3D69'
+    },
+    'Kick Sauber': {
+      primary: '#52E252',
+      secondary: '#1D3130'
     }
-  };
+  }), []);
   
   useEffect(() => {
     const loadData = async () => {
@@ -98,8 +116,32 @@ const Teams: React.FC = () => {
       try {
         const predictions = await mockApiService.getRacePredictions(1050);
         
+        // Get all team images from Wikipedia via API
+        interface TeamImageItem extends TeamImage {
+          name: string;
+        }
+        
+        const teamImagesData: TeamImageItem[] = await mockApiService.getTeamImages("");
+        
         // Group by constructor and create teams array
-        const constructorGroups = predictions.reduce((groups: {[key: string]: any}, driver) => {
+        type ConstructorGroup = {
+          drivers: Driver[];
+        };
+        
+        type DriverData = {
+          driverId: number;
+          driver: {
+            code: string;
+            forename: string;
+            surname: string;
+          };
+          constructor: {
+            name: string;
+          };
+          predicted_position: number;
+        };
+        
+        const constructorGroups = predictions.reduce((groups: {[key: string]: ConstructorGroup}, driver: DriverData) => {
           const team = driver.constructor.name;
           if (!groups[team]) {
             groups[team] = {
@@ -119,18 +161,25 @@ const Teams: React.FC = () => {
         }, {});
         
         // Transform into teams array with mock data
-        const teamsData: Team[] = Object.entries(constructorGroups).map(([name, data], index) => {
+        const teamsData: Team[] = [];
+        
+        Object.entries(constructorGroups as Record<string, ConstructorGroup>).forEach(([name, groupData]: [string, ConstructorGroup], index) => {
           const teamId = index + 1;
-          const totalPoints = (data as any).drivers.reduce((sum: number, driver: Driver) => sum + driver.points, 0);
+          const totalPoints = groupData.drivers.reduce((sum: number, driver: Driver) => sum + driver.points, 0);
           
-          return {
+          // Find matching team images from API
+          const teamImageData = teamImagesData.find(t => 
+            t.name === name || t.name.includes(name) || name.includes(t.name)
+          );
+          
+          teamsData.push({
             id: teamId,
             name,
-            logo: `team-${name.toLowerCase().replace(/\s+/g, '-')}.svg`,
+            logo: teamImageData?.logo || `team-${name.toLowerCase().replace(/\s+/g, '-')}.svg`,
             color: teamColors[name as keyof typeof teamColors]?.primary || '#888',
             position: 0, // Will be calculated after sorting
             points: totalPoints,
-            drivers: (data as any).drivers,
+            drivers: groupData.drivers,
             stats: {
               wins: Math.floor(Math.random() * 5),
               podiums: Math.floor(Math.random() * 10) + 2,
@@ -144,8 +193,9 @@ const Teams: React.FC = () => {
               reliability: Math.random() * 10,
               pitStops: Math.random() * 10,
               development: Math.random() * 10
-            }
-          };
+            },
+            images: teamImageData
+          });
         });
         
         // Sort by points and assign positions
@@ -168,7 +218,7 @@ const Teams: React.FC = () => {
     };
 
     loadData();
-  }, []);
+  }, [teamColors]);
 
   // Get the currently selected team
   const currentTeam = teams.find(team => team.id === selectedTeam);
@@ -196,17 +246,20 @@ const Teams: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="f1-heading-2 flex items-center">
-          Teams
-          <ChevronRight className="h-6 w-6 mx-1 text-gray-400" />
-          <span className="text-f1-red">2024 Season</span>
-        </h1>
-      </div>
+    <div className="min-h-screen">
+      <Header currentRace={null} />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8">
+        {/* Header */}
+        <div className="mb-6">
+          <h1 className="f1-heading-2 flex items-center">
+            Teams
+            <ChevronRight className="h-6 w-6 mx-1 text-gray-400" />
+            <span className="text-f1-red">2024 Season</span>
+          </h1>
+        </div>
 
-      {isLoading ? (
+        {isLoading ? (
         <div className="f1-card p-12 flex items-center justify-center">
           <div className="flex flex-col items-center space-y-4">
             <div className="relative">
@@ -265,30 +318,47 @@ const Teams: React.FC = () => {
                 {/* Team Header */}
                 <div className="f1-card">
                   <div 
-                    className="h-24 bg-gradient-to-r" 
+                    className="h-32 bg-gradient-to-r relative overflow-hidden" 
                     style={{ 
                       background: `linear-gradient(to right, ${currentTeam.color}, ${
                         teamColors[currentTeam.name as keyof typeof teamColors]?.secondary || 'rgba(0,0,0,0.5)'
                       })` 
                     }}
-                  ></div>
+                  >
+                    {currentTeam.images?.car && (
+                      <img 
+                        src={currentTeam.images.car}
+                        alt={`${currentTeam.name} car`}
+                        className="absolute right-0 top-1/2 transform -translate-y-1/2 h-28 object-contain"
+                      />
+                    )}
+                  </div>
                   
                   <div className="p-6">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
-                      <div>
-                        <h2 className="f1-heading-3 mb-1">{currentTeam.name}</h2>
-                        <div className="flex items-center space-x-3">
-                          <div className="flex items-center space-x-1">
-                            <Trophy className="w-4 h-4 text-yellow-500" />
-                            <span className="text-sm">{currentTeam.stats.wins} wins</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <BarChart3 className="w-4 h-4 text-blue-500" />
-                            <span className="text-sm">{currentTeam.stats.podiums} podiums</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <Clock className="w-4 h-4 text-green-500" />
-                            <span className="text-sm">{currentTeam.stats.fastestLaps} fastest laps</span>
+                      <div className="flex items-center">
+                        {currentTeam.images?.logo && (
+                          <img 
+                            src={currentTeam.images.logo}
+                            alt={`${currentTeam.name} logo`}
+                            className="h-12 mr-4 object-contain"
+                          />
+                        )}
+                        <div>
+                          <h2 className="f1-heading-3 mb-1">{currentTeam.name}</h2>
+                          <div className="flex items-center space-x-3">
+                            <div className="flex items-center space-x-1">
+                              <Trophy className="w-4 h-4 text-yellow-500" />
+                              <span className="text-sm">{currentTeam.stats.wins} wins</span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <BarChart3 className="w-4 h-4 text-blue-500" />
+                              <span className="text-sm">{currentTeam.stats.podiums} podiums</span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <Clock className="w-4 h-4 text-green-500" />
+                              <span className="text-sm">{currentTeam.stats.fastestLaps} fastest laps</span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -316,12 +386,25 @@ const Teams: React.FC = () => {
                       {currentTeam.drivers.map(driver => (
                         <div key={driver.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-f1-dark rounded-lg">
                           <div className="flex items-center">
-                            <div 
-                              className="w-10 h-10 rounded-full mr-3 flex items-center justify-center text-white font-bold"
-                              style={{ backgroundColor: currentTeam.color }}
-                            >
-                              {driver.code}
-                            </div>
+                            {currentTeam.images?.drivers && currentTeam.images.drivers[driver.id] ? (
+                              <div className="w-12 h-12 rounded-full mr-3 overflow-hidden border-2 flex-shrink-0" style={{ borderColor: currentTeam.color }}>
+                                <img 
+                                  src={currentTeam.images.drivers[driver.id]}
+                                  alt={driver.name}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/150?text=Driver';
+                                  }}
+                                />
+                              </div>
+                            ) : (
+                              <div 
+                                className="w-12 h-12 rounded-full mr-3 flex items-center justify-center text-white font-bold flex-shrink-0"
+                                style={{ backgroundColor: currentTeam.color }}
+                              >
+                                {driver.code}
+                              </div>
+                            )}
                             <div>
                               <div className="font-medium">{driver.name}</div>
                               <div className="text-sm text-gray-500 dark:text-gray-400">
@@ -432,7 +515,8 @@ const Teams: React.FC = () => {
             )}
           </div>
         </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

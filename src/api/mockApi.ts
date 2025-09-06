@@ -257,5 +257,112 @@ export const mockApiService = {
         ]
       }
     };
+  },
+
+  // Get team and driver images from Wikipedia
+  getTeamImages: async (teamName: string) => {
+    if (USE_REAL_API) {
+      try {
+        return await apiService.getTeamImages(teamName);
+      } catch (error) {
+        console.warn('Real API failed, falling back to mock data:', error);
+      }
+    }
+    
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    // Mock data with Wikipedia image URLs for F1 teams and cars
+    const teamImages: { [key: string]: any } = {
+      'Red Bull Racing': {
+        logo: 'https://upload.wikimedia.org/wikipedia/en/f/ff/Oracle_Red_Bull_Racing_logo.svg',
+        car: 'https://upload.wikimedia.org/wikipedia/commons/3/3d/Max_Verstappen_-_RB20_-_2024_%28cropped%29.jpg',
+        drivers: {
+          1: 'https://upload.wikimedia.org/wikipedia/commons/7/7d/Max_Verstappen_2017_Malaysia_3.jpg',
+          9: 'https://upload.wikimedia.org/wikipedia/commons/7/7a/Sergio_P%C3%A9rez_2023_Monaco_%28cropped%29.jpg'
+        }
+      },
+      'Ferrari': {
+        logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/d/d1/Ferrari-Logo.svg/800px-Ferrari-Logo.svg.png',
+        car: 'https://upload.wikimedia.org/wikipedia/commons/5/53/Charles_Leclerc_-_SF-24_-_Circuit_de_Barcelona-Catalunya_-_2024_%28cropped%29.jpg',
+        drivers: {
+          3: 'https://upload.wikimedia.org/wikipedia/commons/0/08/FIA_F1_Austria_2022_Nr._16_Leclerc_%28side%2C_squared%29.jpg',
+          6: 'https://upload.wikimedia.org/wikipedia/commons/5/5a/Carlos_Sainz_at_Ferrari_%28cropped%29.jpg'
+        }
+      },
+      'Mercedes': {
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/f/fb/Mercedes_AMG_Petronas_F1_Logo.svg',
+        car: 'https://upload.wikimedia.org/wikipedia/commons/9/9b/Lewis_Hamilton_-_W15_-_2024_%28cropped%29.jpg',
+        drivers: {
+          2: 'https://upload.wikimedia.org/wikipedia/commons/1/18/Lewis_Hamilton_2016_Malaysia_2.jpg',
+          4: 'https://upload.wikimedia.org/wikipedia/commons/3/36/George_Russell_2021_in_Williams_Racing_uniform.jpg'
+        }
+      },
+      'McLaren': {
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/6/66/McLaren_Racing_logo.svg',
+        car: 'https://upload.wikimedia.org/wikipedia/commons/f/f0/Lando_Norris_-_MCL38_-_2024_%28cropped%29.jpg',
+        drivers: {
+          5: 'https://upload.wikimedia.org/wikipedia/commons/3/31/Lando_Norris_2021_in_McLaren_uniform.jpg',
+          7: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Oscar_Piastri_2022_%28cropped%29.jpg'
+        }
+      },
+      'Aston Martin': {
+        logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/1/1f/Aston_Martin_F1_Team_logo.svg/1200px-Aston_Martin_F1_Team_logo.svg.png',
+        car: 'https://upload.wikimedia.org/wikipedia/commons/2/2e/Fernando_Alonso_-_AMR24_-_2024_%28cropped%29.jpg',
+        drivers: {
+          8: 'https://upload.wikimedia.org/wikipedia/commons/8/8c/Fernando_Alonso_McLaren_2017_Cropped.jpg',
+          10: 'https://upload.wikimedia.org/wikipedia/commons/f/fb/Lance_Stroll_2019_%28cropped%29.jpg'
+        }
+      },
+      'Alpine': {
+        logo: 'https://upload.wikimedia.org/wikipedia/en/c/c4/BWT_Alpine_F1_Team_logo.svg',
+        car: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Pierre_Gasly_-_A524_-_2024_%28cropped%29.jpg',
+        drivers: {
+          11: 'https://upload.wikimedia.org/wikipedia/commons/6/66/F1_2019_test_Barcelona%2C_Gasly_%2833376134568%29_%28cropped%29.jpg',
+          12: 'https://upload.wikimedia.org/wikipedia/commons/4/4e/Esteban_Ocon_2017_Malaysia.jpg'
+        }
+      },
+      'Williams': {
+        logo: 'https://upload.wikimedia.org/wikipedia/en/4/45/Williams_Racing_logo_2022.png',
+        car: 'https://upload.wikimedia.org/wikipedia/commons/c/c6/Alex_Albon_-_FW46_-_2024_%28cropped%29.jpg',
+        drivers: {
+          13: 'https://upload.wikimedia.org/wikipedia/commons/9/98/Alex_Albon_2019_%28cropped%29.jpg',
+          14: 'https://upload.wikimedia.org/wikipedia/commons/c/c7/Logan_Sargeant_2022_%28cropped%29.jpg'
+        }
+      },
+      'RB': {
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Visa_Cash_App_RB_F1_Team.svg/1280px-Visa_Cash_App_RB_F1_Team.svg.png',
+        car: 'https://upload.wikimedia.org/wikipedia/commons/c/c4/Daniel_Ricciardo_-_VCARB_01_-_2024_%28cropped%29.jpg',
+        drivers: {
+          15: 'https://upload.wikimedia.org/wikipedia/commons/5/58/Yuki_Tsunoda_2021_%28cropped%29.jpg',
+          16: 'https://upload.wikimedia.org/wikipedia/commons/5/5c/Daniel_Ricciardo_2022_Australian_GP_%28cropped%29.jpg'
+        }
+      },
+      'Haas F1 Team': {
+        logo: 'https://upload.wikimedia.org/wikipedia/commons/4/44/MoneyGram_Haas_F1_Team_logo.png',
+        car: 'https://upload.wikimedia.org/wikipedia/commons/e/ee/Nico_H%C3%BClkenberg_-_VF-24_-_2024_%28cropped%29.jpg',
+        drivers: {
+          17: 'https://upload.wikimedia.org/wikipedia/commons/2/26/Nico_Hülkenberg_2017_Malaysia.jpg',
+          18: 'https://upload.wikimedia.org/wikipedia/commons/7/7a/Kevin_Magnussen_2022_%28cropped%29.jpg'
+        }
+      },
+      'Kick Sauber': {
+        logo: 'https://upload.wikimedia.org/wikipedia/en/e/e1/Stake_F1_Team_Kick_Sauber.png',
+        car: 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Valtteri_Bottas_-_C44_-_2024_%28cropped%29.jpg',
+        drivers: {
+          19: 'https://upload.wikimedia.org/wikipedia/commons/2/29/Valtteri_Bottas_2023_United_States_GP.jpg',
+          20: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Zhou_Guanyu_2022_%28cropped%29.jpg'
+        }
+      }
+    };
+    
+    // Return specific team or all teams if no name provided
+    if (teamName && teamImages[teamName]) {
+      return teamImages[teamName];
+    }
+    
+    return Object.entries(teamImages).map(([name, data]) => ({
+      name,
+      ...data
+    }));
   }
 };

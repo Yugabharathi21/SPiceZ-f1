@@ -125,6 +125,15 @@ export const apiService = {
     const response = await apiClient.get('/models/status');
     return response.data.model_status;
   },
+
+  // Team images
+  async getTeamImages(teamName?: string) {
+    const url = teamName 
+      ? `/teams/images?name=${encodeURIComponent(teamName)}` 
+      : '/teams/images';
+    const response = await apiClient.get(url);
+    return response.data.images;
+  },
 };
 
 export default apiClient;
