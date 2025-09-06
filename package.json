@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "cd server && python main.py",
-    "start": "concurrently \"npm run dev\" \"npm run server\""
+    "train-models": "cd server && python scripts/train_models.py",
+    "start": "concurrently \"npm run dev\" \"npm run server\"",
+    "start:with-training": "concurrently \"npm run train-models\" \"npm run start\""
   },
   "dependencies": {
     "axios": "^1.11.0",
