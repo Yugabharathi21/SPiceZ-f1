@@ -70,12 +70,12 @@ const DriverProfile: React.FC = () => {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center space-x-6">
             {/* Driver Avatar */}
-            <div className="w-24 h-24 bg-gray-700 rounded-full flex items-center justify-center text-3xl font-bold text-white">
+            <div className="w-24 h-24 bg-gray-700 rounded-full flex items-center justify-center text-3xl font-bold text-white font-f1mono">
               {driver.code}
             </div>
             
             <div>
-              <h1 className="text-4xl font-bold text-white mb-2">
+              <h1 className="f1-heading-1 text-white mb-2">
                 {driver.forename} {driver.surname}
               </h1>
               <div className="flex flex-wrap items-center gap-4 text-gray-300">
@@ -97,17 +97,17 @@ const DriverProfile: React.FC = () => {
           <div className="mt-4 lg:mt-0 grid grid-cols-3 gap-4">
             <div className="bg-gray-800/50 rounded-xl p-4 text-center">
               <Trophy className="w-6 h-6 text-yellow-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-white">{driver.wins || 0}</p>
-              <p className="text-xs text-gray-400">Wins</p>
+              <p className="text-2xl font-bold font-f1mono text-white">{driver.wins || 0}</p>
+              <p className="text-xs text-gray-400 font-body">Wins</p>
             </div>
             <div className="bg-gray-800/50 rounded-xl p-4 text-center">
               <TrendingUp className="w-6 h-6 text-green-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-white">{driver.podiums || 0}</p>
-              <p className="text-xs text-gray-400">Podiums</p>
+              <p className="text-2xl font-bold font-f1mono text-white">{driver.podiums || 0}</p>
+              <p className="text-xs text-gray-400 font-body">Podiums</p>
             </div>
             <div className="bg-gray-800/50 rounded-xl p-4 text-center">
               <Flag className="w-6 h-6 text-blue-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-white">{driver.points || 0}</p>
+              <p className="text-2xl font-bold font-f1mono text-white">{driver.points || 0}</p>
               <p className="text-xs text-gray-400">Points</p>
             </div>
           </div>
@@ -117,7 +117,7 @@ const DriverProfile: React.FC = () => {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
         {/* Performance Chart */}
         <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6">
-          <h2 className="text-2xl font-bold text-white mb-6">Recent Performance</h2>
+          <h2 className="f1-heading-3 text-white mb-6">Recent Performance</h2>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={performance}>
@@ -159,7 +159,7 @@ const DriverProfile: React.FC = () => {
 
         {/* SHAP Explanations */}
         <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6">
-          <h2 className="text-2xl font-bold text-white mb-6">Prediction Factors</h2>
+          <h2 className="f1-heading-3 text-white mb-6">Prediction Factors</h2>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={shapData} layout="horizontal">
@@ -209,7 +209,7 @@ const DriverProfile: React.FC = () => {
       {/* Additional Stats */}
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6">
-          <h3 className="text-lg font-bold text-white mb-4">Season Stats</h3>
+          <h3 className="f1-heading-4 text-white mb-4">Season Stats</h3>
           <div className="space-y-3">
             <div className="flex justify-between">
               <span className="text-gray-400">Championship Position</span>
@@ -227,7 +227,7 @@ const DriverProfile: React.FC = () => {
         </div>
 
         <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6">
-          <h3 className="text-lg font-bold text-white mb-4">Qualifying</h3>
+          <h3 className="f1-heading-4 text-white mb-4">Qualifying</h3>
           <div className="space-y-3">
             <div className="flex justify-between">
               <span className="text-gray-400">Avg Grid Position</span>
@@ -245,7 +245,7 @@ const DriverProfile: React.FC = () => {
         </div>
 
         <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6">
-          <h3 className="text-lg font-bold text-white mb-4">Race Pace</h3>
+          <h3 className="f1-heading-4 text-white mb-4">Race Pace</h3>
           <div className="space-y-3">
             <div className="flex justify-between">
               <span className="text-gray-400">Avg Lap Time</span>

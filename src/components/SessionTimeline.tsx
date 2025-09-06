@@ -78,7 +78,7 @@ const SessionTimeline: React.FC<SessionTimelineProps> = ({ race, predictions }) 
 
   return (
     <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6">
-      <h2 className="text-2xl font-bold text-white mb-6">Weekend Timeline</h2>
+      <h2 className="f1-heading-3 text-white mb-6">Weekend Timeline</h2>
       
       <div className="relative">
         {/* Timeline line */}
@@ -97,7 +97,7 @@ const SessionTimeline: React.FC<SessionTimelineProps> = ({ race, predictions }) 
                 {/* Session info */}
                 <div className="flex-1 min-w-0 pb-6">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-lg font-bold text-white">{session.name}</h3>
+                    <h3 className="text-lg font-bold font-f1 text-white uppercase">{session.name}</h3>
                     <div className="flex items-center space-x-2">
                       <div className={`w-2 h-2 rounded-full ${getStatusColor(session.status)}`}></div>
                       <span className="text-sm text-gray-400 capitalize">{session.status}</span>
@@ -111,7 +111,7 @@ const SessionTimeline: React.FC<SessionTimelineProps> = ({ race, predictions }) 
                   {/* Session-specific content */}
                   {session.id === 'qualifying' && (
                     <div className="bg-gray-900/50 rounded-lg p-4">
-                      <h4 className="font-medium text-white mb-3">Qualifying Results</h4>
+                      <h4 className="font-medium font-f1 text-white mb-3 uppercase">Qualifying Results</h4>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                         {predictions.slice(0, 3).map((driver, i) => (
                           <div key={i} className="flex items-center space-x-2">
@@ -129,7 +129,7 @@ const SessionTimeline: React.FC<SessionTimelineProps> = ({ race, predictions }) 
 
                   {session.id === 'race' && (
                     <div className="bg-gradient-to-r from-red-900/20 to-transparent border border-red-600/20 rounded-lg p-4">
-                      <h4 className="font-medium text-white mb-2">Race Predictions</h4>
+                      <h4 className="font-medium font-f1 text-white mb-2 uppercase">Race Predictions</h4>
                       <p className="text-sm text-gray-400">
                         {predictions.length} driver predictions loaded
                       </p>

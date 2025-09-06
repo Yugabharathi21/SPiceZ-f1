@@ -28,7 +28,7 @@ const TrackMap: React.FC<TrackMapProps> = ({ circuit }) => {
 
   return (
     <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 h-fit">
-      <h2 className="text-2xl font-bold text-white mb-6">Circuit Overview</h2>
+      <h2 className="f1-heading-3 text-white mb-6">Circuit Overview</h2>
 
       {/* Track Visual (Simplified) */}
       <div className="relative bg-gray-900 rounded-xl p-6 mb-6 min-h-[200px]">

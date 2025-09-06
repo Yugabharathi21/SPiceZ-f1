@@ -2,121 +2,211 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Formula1 Font Configuration - Fallback First */
+@font-face {
+  font-family: 'Formula1 Display-Black';
+  src: url('https://db.onlinewebfonts.com/t/f817b827ea06fe3bfe3ee1e8d538686a.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  html {
+    font-family: Inter, Poppins, system-ui, sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  /* Light mode variables */
+  :root {
+    --background: 240 240 245; /* f1-silver */
+    --foreground: 21 21 30; /* f1-black */
+    --card: 255 255 255; /* white */
+    --card-foreground: 21 21 30; /* f1-black */
+    --primary: 225 6 0; /* f1-red */
+    --primary-foreground: 255 255 255; /* white */
+    --accent: 61 210 204; /* f1-accent */
+    --border: 226 232 240; /* gray-200 */
+    --ring: 225 6 0; /* f1-red */
+  }
+
+  /* Dark mode variables */
+  .dark {
+    --background: 21 21 30; /* f1-black */
+    --foreground: 240 240 245; /* f1-silver */
+    --card: 31 31 39; /* f1-dark */
+    --card-foreground: 255 255 255; /* white */
+    --primary: 225 6 0; /* f1-red */
+    --primary-foreground: 255 255 255; /* white */
+    --accent: 61 210 204; /* f1-accent */
+    --border: 56 56 63; /* f1-gray */
+    --ring: 225 6 0; /* f1-red */
+  }
+}
+
 /* Custom scrollbar for webkit browsers */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
+.dark ::-webkit-scrollbar-track {
+  @apply bg-f1-dark;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-f1-gray rounded-full;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  @apply bg-f1-red/40;
+}
+
 ::-webkit-scrollbar-track {
-  @apply bg-gray-800;
+  @apply bg-gray-100;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-600 rounded-full;
+  @apply bg-gray-300 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-500;
+  @apply bg-f1-red/30;
 }
 
-/* Custom animations */
-@keyframes slideIn {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
+/* Custom component classes */
+@layer components {
+  .f1-card {
+    @apply bg-white dark:bg-f1-dark rounded-xl border border-gray-200 dark:border-f1-gray shadow-card dark:shadow-card-dark transition-all duration-300 hover:shadow-card-hover dark:hover:shadow-card-dark-hover overflow-hidden;
   }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
 
-@keyframes slideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
+  .f1-card-flat {
+    @apply bg-white dark:bg-f1-dark rounded-xl border border-gray-200 dark:border-f1-gray overflow-hidden;
   }
-  to {
-    transform: translateY(0);
-    opacity: 1;
+
+  .f1-card-glass {
+    @apply bg-white/80 dark:bg-f1-dark/80 backdrop-blur-md rounded-xl border border-gray-200 dark:border-f1-gray/40 shadow-card dark:shadow-card-dark overflow-hidden;
   }
-}
 
-@keyframes pulse-red {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  .f1-card-highlight {
+    @apply bg-white dark:bg-f1-dark rounded-xl border-l-4 border border-f1-red shadow-card dark:shadow-card-dark transition-all duration-300 hover:shadow-card-hover dark:hover:shadow-card-dark-hover overflow-hidden;
   }
-  50% {
-    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+
+  .f1-btn-primary {
+    @apply px-4 py-2 bg-f1-red text-white font-semibold rounded-lg shadow-md hover:bg-f1-red-light transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-f1-red focus:ring-opacity-50 disabled:opacity-50;
   }
-}
+  
+  .f1-btn-secondary {
+    @apply px-4 py-2 bg-f1-gray/20 dark:bg-f1-gray/30 text-f1-black dark:text-white font-semibold rounded-lg hover:bg-f1-gray/30 dark:hover:bg-f1-gray/50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-f1-gray focus:ring-opacity-50 disabled:opacity-50;
+  }
+  
+  .f1-btn-outline {
+    @apply px-4 py-2 bg-transparent text-f1-red font-semibold rounded-lg border border-f1-red hover:bg-f1-red/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-f1-red focus:ring-opacity-50 disabled:opacity-50;
+  }
+  
+  .f1-input {
+    @apply px-4 py-2 w-full bg-white dark:bg-f1-dark border border-gray-300 dark:border-f1-gray rounded-lg focus:outline-none focus:ring-2 focus:ring-f1-red/50 dark:text-white;
+  }
+  
+  .f1-label {
+    @apply block text-sm font-semibold mb-1 text-f1-black dark:text-white;
+  }
+  
+  .f1-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+  
+  .f1-badge-red {
+    @apply f1-badge bg-red-100 dark:bg-red-900/30 text-f1-red;
+  }
+  
+  .f1-badge-blue {
+    @apply f1-badge bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400;
+  }
+  
+  .f1-badge-green {
+    @apply f1-badge bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400;
+  }
+  
+  .f1-badge-yellow {
+    @apply f1-badge bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400;
+  }
+  
+  .f1-badge-purple {
+    @apply f1-badge bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400;
+  }
+  
+  .f1-heading-1 {
+    @apply text-4xl md:text-5xl font-bold font-f1 tracking-tight text-f1-black dark:text-white uppercase;
+  }
+  
+  .f1-heading-2 {
+    @apply text-3xl font-bold font-f1 tracking-tight text-f1-black dark:text-white uppercase;
+  }
+  
+  .f1-heading-3 {
+    @apply text-2xl font-bold font-f1 text-f1-black dark:text-white uppercase;
+  }
+  
+  .f1-heading-4 {
+    @apply text-xl font-semibold font-f1 text-f1-black dark:text-white uppercase;
+  }
+  
+  .f1-body {
+    @apply text-base font-body text-gray-700 dark:text-gray-300;
+  }
 
-.animate-slide-in {
-  animation: slideIn 0.5s ease-out;
-}
-
-.animate-slide-up {
-  animation: slideUp 0.3s ease-out;
-}
-
-.animate-pulse-red {
-  animation: pulse-red 2s infinite;
+  /* Stats grid system */
+  .f1-stats-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4;
+  }
+  
+  .f1-stat-card {
+    @apply f1-card flex flex-col p-4;
+  }
+  
+  .f1-stat-title {
+    @apply text-sm text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider;
+  }
+  
+  .f1-stat-value {
+    @apply text-2xl font-bold text-f1-black dark:text-white font-f1mono;
+  }
+  
+  .f1-stat-footer {
+    @apply flex items-center mt-2 text-sm;
+  }
 }
 
 /* Racing-inspired gradient text */
-.racing-gradient {
-  background: linear-gradient(45deg, #DC2626, #EF4444, #F87171);
+.f1-gradient-text {
+  @apply font-bold;
+  background: linear-gradient(135deg, #E10600, #FF1801);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 /* Checkered flag pattern */
-.checkered-pattern {
+.f1-checkered-pattern {
   background-image: 
-    linear-gradient(45deg, #1F2937 25%, transparent 25%),
-    linear-gradient(-45deg, #1F2937 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #1F2937 75%),
-    linear-gradient(-45deg, transparent 75%, #1F2937 75%);
+    linear-gradient(45deg, rgba(var(--card), 1) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(var(--card), 1) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(var(--card), 1) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(var(--card), 1) 75%);
   background-size: 20px 20px;
   background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
 }
 
-/* F1 Typography */
-.f1-title {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-weight: 900;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.f1-number {
-  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-}
-
 /* Racing stripes */
-.racing-stripes {
+.f1-racing-stripes {
   background: repeating-linear-gradient(
     90deg,
-    #DC2626,
-    #DC2626 2px,
+    #E10600,
+    #E10600 2px,
     transparent 2px,
     transparent 8px
   );
-}
-
-/* Glossy effects */
-.glossy {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0.05) 50%,
-    rgba(0, 0, 0, 0.1) 100%
-  );
-  backdrop-filter: blur(10px);
 }
 
 /* Chart tooltip styles */
@@ -126,45 +216,40 @@
 }
 
 .recharts-tooltip-content {
-  background-color: #1F2937 !important;
-  border: 1px solid #374151 !important;
+  background-color: rgb(var(--card)) !important;
+  border: 1px solid rgb(var(--border)) !important;
   border-radius: 8px !important;
-  color: #F3F4F6 !important;
+  color: rgb(var(--card-foreground)) !important;
 }
 
-/* Custom focus states */
-.focus-ring:focus {
-  outline: 2px solid #DC2626;
-  outline-offset: 2px;
+.dark .recharts-tooltip-content {
+  background-color: rgb(var(--card)) !important;
+  border: 1px solid rgb(var(--border)) !important;
+  border-radius: 8px !important;
+  color: rgb(var(--card-foreground)) !important;
 }
 
-/* Loading states */
-.loading-pulse {
-  background: linear-gradient(90deg, #374151 25%, #4B5563 50%, #374151 75%);
+/* Accessibility focus outline */
+.focus-visible\:f1-ring:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #E10600;
+}
+
+/* Loading pulse effect */
+.f1-loading-pulse {
+  background: linear-gradient(90deg, 
+    rgba(var(--card), 0.7), 
+    rgba(var(--card), 0.9), 
+    rgba(var(--card), 0.7));
   background-size: 200% 100%;
-  animation: loading 1.5s infinite;
+  animation: f1-loading 1.5s infinite;
 }
 
-@keyframes loading {
+@keyframes f1-loading {
   0% {
     background-position: 200% 0;
   }
   100% {
     background-position: -200% 0;
-  }
-}
-
-/* Mobile optimizations */
-@media (max-width: 640px) {
-  .mobile-stack {
-    @apply flex-col space-y-4 space-x-0;
-  }
-  
-  .mobile-hide {
-    @apply hidden;
-  }
-  
-  .mobile-full {
-    @apply w-full;
   }
 }

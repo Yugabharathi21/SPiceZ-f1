@@ -83,7 +83,7 @@ const LiveMode: React.FC<LiveModeProps> = ({ race }) => {
               <span className="font-bold">{isLive ? 'LIVE' : 'PAUSED'}</span>
             </div>
             <div className="text-white">
-              <span className="text-2xl font-bold">Lap {currentLap}</span>
+              <span className="text-2xl font-bold font-f1">Lap {currentLap}</span>
               <span className="text-gray-400 ml-2">/ {Math.max(...lapData.map(d => d.lap || 58))}</span>
             </div>
           </div>
