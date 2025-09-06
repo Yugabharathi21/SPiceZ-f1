@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
+
+/* Custom animations */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-red {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.5s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+.animate-pulse-red {
+  animation: pulse-red 2s infinite;
+}
+
+/* Racing-inspired gradient text */
+.racing-gradient {
+  background: linear-gradient(45deg, #DC2626, #EF4444, #F87171);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Checkered flag pattern */
+.checkered-pattern {
+  background-image: 
+    linear-gradient(45deg, #1F2937 25%, transparent 25%),
+    linear-gradient(-45deg, #1F2937 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #1F2937 75%),
+    linear-gradient(-45deg, transparent 75%, #1F2937 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+/* F1 Typography */
+.f1-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.f1-number {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+/* Racing stripes */
+.racing-stripes {
+  background: repeating-linear-gradient(
+    90deg,
+    #DC2626,
+    #DC2626 2px,
+    transparent 2px,
+    transparent 8px
+  );
+}
+
+/* Glossy effects */
+.glossy {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  backdrop-filter: blur(10px);
+}
+
+/* Chart tooltip styles */
+.recharts-tooltip-wrapper {
+  border-radius: 8px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+}
+
+.recharts-tooltip-content {
+  background-color: #1F2937 !important;
+  border: 1px solid #374151 !important;
+  border-radius: 8px !important;
+  color: #F3F4F6 !important;
+}
+
+/* Custom focus states */
+.focus-ring:focus {
+  outline: 2px solid #DC2626;
+  outline-offset: 2px;
+}
+
+/* Loading states */
+.loading-pulse {
+  background: linear-gradient(90deg, #374151 25%, #4B5563 50%, #374151 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .mobile-stack {
+    @apply flex-col space-y-4 space-x-0;
+  }
+  
+  .mobile-hide {
+    @apply hidden;
+  }
+  
+  .mobile-full {
+    @apply w-full;
+  }
+}
