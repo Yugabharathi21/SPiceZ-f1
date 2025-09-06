@@ -4,6 +4,8 @@ import Header from './components/Header';
 import RaceOverview from './pages/RaceOverview';
 import DriverProfile from './pages/DriverProfile';
 import LiveMode from './pages/LiveMode';
+import Analytics from './pages/Analytics';
+import Teams from './pages/Teams';
 import CopilotChat from './components/CopilotChat';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { mockApiService } from './api/mockApi';
@@ -72,6 +74,8 @@ function App() {
               <Route path="/race-overview" element={<RaceOverview race={currentRace} />} />
               <Route path="/driver/:driverId" element={<DriverProfile />} />
               <Route path="/live" element={<LiveMode race={currentRace} />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/teams" element={<Teams />} />
               <Route path="*" element={<Navigate to="/race-overview" replace />} />
             </Routes>
           </main>
