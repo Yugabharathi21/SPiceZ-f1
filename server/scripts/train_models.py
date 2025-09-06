@@ -64,17 +64,17 @@ class F1ModelTrainer:
         logger.info("Engineering features...")
         
         # Join main datasets
-        df = self.results.merge(self.races, on='raceId', how='left')
-        df = df.merge(self.drivers, on='driverId', how='left')
-        df = df.merge(self.constructors, on='constructorId', how='left')
-        df = df.merge(self.circuits, on='circuitId', how='left')
+        df = self.results.merge(self.races, on='raceId', how='left', suffixes=(None, '_race'))
+        df = df.merge(self.drivers, on='driverId', how='left', suffixes=(None, '_driver'))
+        df = df.merge(self.constructors, on='constructorId', how='left', suffixes=(None, '_constructor'))
+        df = df.merge(self.circuits, on='circuitId', how='left', suffixes=(None, '_circuit'))
         
         # Add qualifying data
         qualifying_features = self.qualifying.groupby(['raceId', 'driverId']).agg({
             'position': 'first',
-            'q1': lambda x: pd.to_numeric(x.replace('\\N', np.nan), errors='coerce').first(),
-            'q2': lambda x: pd.to_numeric(x.replace('\\N', np.nan), errors='coerce').first(),
-            'q3': lambda x: pd.to_numeric(x.replace('\\N', np.nan), errors='coerce').first()
+            'q1': lambda x: pd.to_numeric(x.str.replace('\\N', ''), errors='coerce').iloc[0] if len(x) > 0 else np.nan,
+            'q2': lambda x: pd.to_numeric(x.str.replace('\\N', ''), errors='coerce').iloc[0] if len(x) > 0 else np.nan,
+            'q3': lambda x: pd.to_numeric(x.str.replace('\\N', ''), errors='coerce').iloc[0] if len(x) > 0 else np.nan
         }).reset_index()
         
         qualifying_features.columns = ['raceId', 'driverId', 'qualifying_position', 'q1_time', 'q2_time', 'q3_time']
